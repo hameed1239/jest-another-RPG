@@ -1,7 +1,7 @@
 const { JestEnvironment } = require("@jest/environment");
 const Player = require("../lib/Player.js");
 const Potion = require("../lib/__mocks__/Potion.js");
-jest.mock('../lib/potion');
+jest.mock('../lib/Potion');
 console.log(new Potion());
 
 test('creates a player object', () => {
@@ -66,4 +66,32 @@ test("subtract from player's health", () => {
   expect(player.health).toBe(0);
 
   expect(player.subr)
+});
+
+test("get's player's attack Value ", () => {
+  const player = new Player("Dave");
+  player.strength = 10;
+
+  expect(player.getAttackValue()).toBeGreaterThanOrEqual(5);
+  expect(player.getAttackValue()).toBeLessThanOrEqual(15);
+});
+
+test('adds a potion to the inventory', () => {
+  const player = new Player('Dave');
+  const oldCount = player.inventory.length;
+
+  player.addPotion(new Potion());
+
+  expect(player.inventory.length).toBeGreaterThan(oldCount);
+  
+});
+test('use a potion from the inventory', () => {
+  const player = new Player('Dave');
+  player.inventory = [new Potion(), new Potion(), new Potion()];
+  const oldCount = player.inventory.length;
+
+  player.usePotion(1);
+
+  expect(player.inventory.length).toBeLessThan(oldCount);
+  
 });
